@@ -1,59 +1,111 @@
-# A6:2017 Más Configurações de Segurança
+# A6:2017 Configurações de Segurança Incorretas
 
-| Agentes de Ameaça/Vectores de Ataque | Fraquezas de Segurança           | Impactos               |
+
+| Agentes de Ameaça/Vectores de Ataque | Falha de Segurança | Impacto |
 | -- | -- | -- |
-| Nível de Acesso \| Exploração 3 | Prevalência 3 \| Deteção 3 | Técnico 2 \| Negócio |
-| Os atacantes tentam frequentemente aceder a contas por defeito, páginas não usadas, falhas não corrigidas, ficheiros e e directorias não protegidas, etc. para ganhar acesso não autorizado ou conhecimento do sistema. | Más configurações de segurança podem ocorrer em qualquer nível do stack aplicacional, incluindo a plataforma, servidor web, servidor aplicacional, base de dados, frameworks, e código customizado. Scanners automatizados são úteis na detecção de más configurações, uso de configurações ou contas por defeito, serviços desnecessários, opções legadas etc. | Tais falhas frequentemente dão aos atacantes acesso não autorizado a alguns dados ou funcionalidades do sistema. Ocasionalmente, tais falhas resultam no compromisso total do sistema. O impacto do negócio depende das necessidades de protecção da aplicação e dados. |
+| Específico App. \| Abuso: 3 | Prevalência: 3 \| Deteção: 3 | Técnico: 2 \| Negócio ? |
+| Os atacantes tentam frequentemente aceder a contas padrão, páginas não usadas, falhas não corrigidas, ficheiros e diretórios não protegidos, etc. para ganhar acesso não autorizado ou conhecimento do sistema. | Más configurações de segurança podem ocorrer em qualquer nível da camada aplicacional, incluindo serviços de comunicação, plataforma, servidor web, servidor aplicacional, base de dados, frameworks, código personalizado e máquinas virtuais pré-instaladas, containers ou armazenamento. Scanners automatizados são úteis na deteção de más configurações, uso de configurações ou contas padrão, serviços desnecessários, opções herdadas etc. | Tais falhas concedem frequentemente aos atacantes acesso não autorizado a alguns dados ou funcionalidades do sistema. Ocasionalmente, tais falhas fazem com que o sistema seja completamente comprometido. O impacto no negócio depende das necessidades de protecção da aplicação e dados. |
 
-## Está a Aplicação Vulnerável?
+## A Aplicação é Vulnerável?
 
-Está a sua aplicação a necessitar de algum tipo de endurecimento de segurança em alguma das partes do stack da aplicação? Incluindo:
+A aplicação pode ser vulnerável se:
 
-* Existem algumas funcionalidades activadas ou instaladas (p.e. portos, serviços, páginas, contas, privilégioss)?
-* Existem contas por defeito e as suas passwords ainda estão activas e inalteradas?
-* Será que a forma de tratamento de erros revela dados de execução do stack ou outra informação de erros demasiado detalhada para os utilizadores?
-* Em sistemas actualizados, estão as últimas funcionalidades de segurança desactivadas ou não estão configuradas de forma segura?
-* Estão as configurações de segurança nos seus servidores aplicacionais, frameworks aplicacionais (p.e. Struts, Spring, ASP.NET), bibliotecas, bases de dados, etc. não estabelecidas com valores seguros?
-* Para aplicações web, será que o servidor não envia as directivas de segurança para os agentes do cliente (p.e. [Security Headers](https://www.owasp.org/index.php/OWASP_Secure_Headers_Project)) ou será que não estão estabelecidas com valores seguros?
-* Está algum do seu software desactualizado? (see **A9:2017-Utilização de Componentes com Vulnerabilidades Conhecidas**).
+* Estão em falta medidas apropriadas de segurança em alguma parte da camada
+  aplicacional.
+* Funcionalidades desnecessárias estão ativas ou instaladas (e.g. portos de
+  comunicação desnecessários, serviços, páginas, contas ou privilégios).
+* Existem contas padrão e as suas palavras-passe ainda estão ativas e
+  inalteradas.
+* A rotina de tratamento de erros revela informação de execução (_stack trace_)
+  ou outras mensagens que incluam detalhe excessivo para os utilizadores.
+* Em sistemas atualizados, as últimas funcionalidades de segurança encontram-se
+  desativadas ou configuradas de forma insegura.
+* As definições de segurança nos servidores aplicacionais, _frameworks_ (e.g.
+  Struts, Spring, ASP.NET), bibliotecas de código, base de dados, etc., não usam
+  valores seguros.
+* O servidor não inclui cabeçalhos ou diretivas de segurança nas respostas ou
+  estas não usam valores seguros.
+* O software está desatualizado ou vulnerável (ver [A9:2017 Utilização de
+  Componentes Vulneráveis][0xa61]).
 
-Sem um processo de configuração de segurança concertado e repetível, os sistemas enfrentam maiores riscos de segurança.
+Sem manutenção corretiva e um processo de aplicação de definições de segurança
+reprodutível os sistemas apresentam um risco mais elevado.
 
-## Como Prevenir?
+## Como Prevenir
 
-Falta à sua aplicação o endurecimento de segurança apropriado em alguma parte do stack aplicacional? Incluindo:
+Processos de instalação seguros devem ser implementados, incluindo:
 
-* Um processo de endurecimento repetível que o torne rápido e facilmente replicável para ser usado num outro ambiente que está devidamente protegido. Ambientes de desenvolvimento, de qualidade e de produção devem estar configurados de igual forma, com credenciais diferentes usadas em cada ambiente. Este processo deve ser automatizado para minimizar o esforço necessário para configurar um novo ambiente seguro.
-* Remover ou não instalar quaisquer funcionalidades, componentes, documentação ou exemplos que seja desnecessários. Remover dependências e frameworks não usadas.
-* Um processo para efectuar uma triagem a aplicar todas as actualizações e correções de uma forma atempada para cada um dos ambientes estabelecidos. Este processo necessita de incluir todas as frameworks, dependências e bibliotecas (ver **A9:2017 Utilização de Componentes com Vulnerabilidades Conhecidas**).
-* Uma arquitectura aplicacional forte que ofereça uma efectiva separação segura entre componentes, com segmentação, contentorização ou grupos de segurança cloud (ACLs).
-* Um processo automatizado para verificar a eficiência das configurações e parameterizações em todos os ambientes.
+* Um processo automatizado e reprodutível de robustecimento do sistema, que
+  torne fácil e rápido criar um novo ambiente devidamente seguro. Ambientes de
+  desenvolvimento, qualidade e produção devem ser configurados de forma
+  semelhante com credenciais específicas por ambiente.
+* A plataforma mínima necessária, sem funcionalidades desnecessárias,
+  componentes, documentação ou exemplos. Remover ou não instalar funcionalidades
+  que não são usadas bem como frameworks.
+* Uma tarefa para rever e atualizar as configurações de forma adequada e de
+  acordo com as notas de segurança, atualizações e correções como parte do
+  processo de gestão de correções (ver [A9:2017 Utilização de Componentes com
+  Vulnerabilidades Conhecidas][0xa61]).
+* Uma arquitetura aplicacional segmentada que garanta uma separação efetiva e
+  segura entre os componentes ou módulos, com segmentação, utilização de
+  containers ou grupos de segurança cloud (Access Control List (ACL)).
+* Envio de diretivas de segurança para o agente dos clientes e.g. _Security
+  Headers_.
+* Um processo automatizado para verificação da eficácia das configurações e
+  definições em todos os ambientes.
 
 ## Exemplos de Cenários de Ataque
 
-**Cenário #1**: A consola de administração do servidor aplicacional é automaticamente instalada e não é removida. O atacante descobre que as páginas de administração estão no servidor, entra com as palavras-chave por defeito, e assume o controlo.
+**Cenário #1**: O servidor aplicacional inclui aplicações de demonstração que
+não são removidas do servidor de produção. Para além de falhas de segurança
+conhecidas que os atacantes usam para comprometer o servidor, se uma destas
+aplicações for a consola de administração e as contas padrão não tiverem sido
+alteradas, o atacante consegue autenticar-se usando a palavra-passe padrão,
+ganhando assim o controlo do servidor.
 
-**Cenário #2**: A listagem de directorias não está desactivada no seu servidor. Um atacante descobre que pode listar uma directoria para encontrar um determinado ficheiro. O atacante descobre e descarrega as suas classes Java compiladas, que podem ser depois ser alvo de engenharia reversa para obter o seu código fonte costumizado. Um atacante pode depois encontrar uma falha séria de controlo de acesso da aplicação que pode explorar.
+**Cenário #2**: A listagem de diretorias não está desativada no servidor. O
+atacante encontra e descarrega a sua classe Java compilada, revertendo-a para
+ver o código e assim identificar outras falhas graves no controlo de acessos da
+aplicação.
 
-**Cenário #3**: A configuração do servidor aplicacional permite que informação de execução do stack seja retornado para os utilizadores, potencialmente expondo falhas tais como versões de frameworks que são conhecidas por serem vulneráveis.
+**Cenário #3**: A configuração do servidor aplicacional gera mensagens de erro
+detalhadas incluindo, por exemplo, informação de execução (_stack trace_). Isto
+expõe potencialmente informação sensível ou falhas subjacentes em versões de
+componentes reconhecidamente vulneráveis.
 
-**Cenário #4**: O servidor aplicacional vem acompanhado com um conjunto de aplicações de exemplo que não foram removidas do servidor de produção. Estas aplicações de possuem falhas de segurança conhecidas que os atacantes podem usar para comprometer o servidor.
-
-**Cenário #5**: A configuração por defeito ou uma configuração antiga copida activa versões ou opções antigas e vulneráveis de um protocolo que pode ser explorado por um atacante ou malware.
-
+**Cenário #4**: As permissões de partilha dum fornecedor de serviços Cloud
+permitem, por omissão, o acesso a outros utilizadores do serviço via Internet.
+Isto permite o acesso a dados sensíveis armazenados nesse serviço Cloud.
 
 ## Referências
 
 ### OWASP
 
-* [OWASP Testing Guide: Configuration Management](https://www.owasp.org/index.php/Testing_for_configuration_management)
-* [OWASP Testing Guide: Testing for Error Codes](https://www.owasp.org/index.php/Testing_for_Error_Code_(OWASP-IG-006))
-* [OWASP Security Headers Project](https://www.owasp.org/index.php/OWASP_Secure_Headers_Project)
+* [OWASP Testing Guide: Configuration Management][0xa62]
+* [OWASP Testing Guide: Testing for Error Codes][0xa63]
+* [OWASP Security Headers Project][0xa64]
 
-Para consultar requisitos adicionais nesta área, por favor consulte o [ASVS requirements areas for Security Configuration (V11 and V19)](https://www.owasp.org/index.php/ASVS).
+Para requisitos adicionais nesta área, por favor consulte o [ASVS requirements
+areas for Security Configuration (V11 and V19)][0xa65].
 
 ### Externas
 
-* [NIST Guide to General Server Hardening](https://csrc.nist.gov/publications/detail/sp/800-123/final)
-* [CWE Entry 2 on Environmental Security Flaws](https://cwe.mitre.org/data/definitions/2.html)
-* [CIS Security Configuration Guides/Benchmarks](https://www.cisecurity.org/cis-benchmarks/)
+* [NIST Guide to General Server Hardening][0xa66]
+* [CWE Entry 2 on Environmental Security Flaws][0xa67]
+* [CWE-16: Configuration][0xa68]
+* [CWE-388: Error Handling][0xa69]
+* [CIS Security Configuration Guides/Benchmarks][0xa610]
+* [Amazon S3 Bucket Discovery and Enumeration][0xa611]
+
+[0xa61]: ./0xa9-known-vulns.md
+[0xa62]: https://www.owasp.org/index.php/Testing_for_configuration_management
+[0xa63]: https://www.owasp.org/index.php/Testing_for_Error_Code_(OWASP-IG-006)
+[0xa64]: https://www.owasp.org/index.php/OWASP_Secure_Headers_Project
+[0xa65]: https://www.owasp.org/index.php/ASVS
+[0xa66]: https://csrc.nist.gov/publications/detail/sp/800-123/final
+[0xa67]: https://cwe.mitre.org/data/definitions/2.html
+[0xa68]: https://cwe.mitre.org/data/definitions/16.html
+[0xa69]: https://cwe.mitre.org/data/definitions/388.html
+[0xa610]: https://www.cisecurity.org/cis-benchmarks/
+[0xa611]: https://blog.websecurify.com/2017/10/aws-s3-bucket-discovery.html
+
