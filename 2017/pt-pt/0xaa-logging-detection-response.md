@@ -1,49 +1,103 @@
 # A10:2017 Registo e Monitorização Insuficiente
 
-| Agentes de Ameaça/Vectores de Ataque | Fraquezas de Segurança           | Impactos               |
+| Agentes de Ameaça/Vectores de Ataque | Falha de Segurança | Impacto |
 | -- | -- | -- |
-| Nível de Acesso \| Exploração 2 | Prevalência 3 \| Deteção 1 | Técnico 2 \| Negócio |
-| A exploração do registo e monitorização insuficiente são o alicerce de quase todos os incidentes mais importantes. Os atacantes dependem da falta de monitorização e capacidade de resposta atempada para atingirem os seus objectivos sem serem detectados. | Este aspecto está incluído no Top 10 baseado num [inquérito realizado à indústria](https://owasp.blogspot.com/2017/08/owasp-top-10-2017-project-update.html). Uma estratégia para determinar se possui capacidade de monitorização suficiente é examinar os seus ficheiros de registo depois de realizar testes de intrusão. As acções dos auditores deve ter sido registadas com detalhe suficiente para perceber que danos possam ter sido infligidos. | Muitos ataques bem sucedidos começam com uma análise de vulnerabilidades. Permitir que estas ferramentas continuem a ser executadas podem levar a um aumento da taxa de sucesso de exploração de falhas para perto dos 100%. Em 2016, o processo de identificação de uma falha levava [em média cerca de 191 days](https://www-01.ibm.com/common/ssi/cgi-bin/ssialias?htmlfid=SEL03130WWEN&) – muito tempo para que algum tipo de dano pudesse ser inflingido.|
+| Específico App. \| Abuso: 2 | Prevalência: 3 \| Deteção: 1 | Técnico: 2 \| Negócio ? |
+| O abuso do registo e monitorização insuficiente são o alicerce de quase todos os incidentes mais importantes. Os atacantes dependem da falta de monitorização e capacidade de resposta atempada para atingirem os seus objetivos sem serem detetados. | Esta falha foi incluída no Top 10 baseado num [inquérito realizado][0xaa1] à indústria. Uma estratégia para determinar se possui capacidade de monitorização suficiente é examinar os seus ficheiros de registo depois de realizar testes de intrusão. As ações dos auditores devem ter sido registadas com detalhe suficiente para perceber que danos possam ter sido infligidos. | Muitos ataques bem sucedidos começam com a identificação automática de vulnerabilidades. Permitir que estas ferramentas corram aumenta a taxa de sucesso para perto dos 100%. Em 2016, a identificação duma falha levava em média cerca de 191 dias – tempo q.b. para que algum tipo de dano pudesse ser inflingido. |
 
-## Está a Aplicação Vulnerável?
+## A Aplicação é Vulnerável?
 
-Registo, detecção, monitorização e resposta activa insuficientes podem ocorrer em qualquer altura:
+Insuficiência do registo, deteção, monitorização e resposta acontece sempre que:
 
-* Eventos auditáveis, tais como autenticação, autenticação falhada, e transações de elevado valor não são registados.
-* Registos de aplicações e APIs não são monitorizados por actividades suspeitas.
-* Limiares de alerta e de escalamento de respostas de acordo com o risco dos dados detidos pela aplicação não estão em vigor ou não são efectivos. 
+* Eventos auditáveis como autenticação, autenticações falhadas e transações de
+  valor relevante não são registados
+* Alertas e erros não são registados, ou geram mensagens desadequadas ou
+  insuficientes.
+* Registos das aplicações e APIs não são monitorizados para deteção de atividade
+  suspeita.
+* Registos são armazenados localmente.
+* Limites para geração de alertas e processos de elevação de resposta não estão
+  definidos ou não são eficazes.
+* Testes de intrusão e verificações por ferramentas [DAST][0xaa2] (e.g. [OWASP
+  ZAP][0xaa3]) não geram alertas.
+* A aplicação é incapaz de detetar, lidar com ou alertar em tempo real ou
+  quase-real para ataques em curso.
 
-Para organizações maiores e de elevado desempenho, a falta de uma resposta activa, tais como actividades de resposta e alerta em tempo real como o bloqueio de ataques automáticos a aplicações web e particularmente colocam a organização em risco de compromisso estendido. A resposta não necessita necessariamente de ser visível para o atacante, apenas que a aplicação e a infraestrurura associada, frameworks, níveis de serviços, entre outros, possam detectar e alertar os humanos ou ferramentas para responder em tempo quase real.
+Está ainda vulnerável à fuga de informação se tornar os registos e alertas
+visíveis para os utilizadores ou atacantes (ver [A3:2017-Exposição de Dados
+Sensíveis][0xaa4]).
 
-## Como Prevenir?
+## Como Prevenir
 
-De acordo com o risco dos dados armazenados ou processados pela aplicação:
+Dependendo do risco inerente à informação armazenada ou processada pela
+aplicação:
 
-* Assegurar que todas as autenticações, falhas de controlo de acesso, falhas de validação de entradas do lado do servidor, possam ser registadas com contexto do utilizador suficiente para identificar as contas suspeitas ou maliciosas, e detidas o tempo suficiente para permitir análise forense posterior.
-* Assegurar que as transações de elevado valor possuem um traço de auditoria com controlos de integridade para prevenir alterações ou remoções, tais como tabelas que apenas permitem adicionar registos ou similares.
-* Estabelecer mecanismos efectivos de monitorização e alerta de forma a que as actividades suspeitas sejam detectadas e haja uma resposta dentro de um período de tempo aceitável.
-* Estabelecer ou adoptar um plano de resposte e recuperação de incidentes, tais como o [NIST 800-61 rev 2](https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final) ou superior.
+* Assegurar que todas as autenticações, falhas no controlo de acessos e falhas
+  na validação de dados de entrada no servidor são registados com detalhe
+  suficiente do contexto do utilizador que permita identificar contas suspeitas
+  ou maliciosas e mantidos por tempo suficiente que permita a análise forense.
+* Assegurar que os registos usam um formato que possa ser facilmente consumido
+  por uma solução de gestão de registos centralizada.
+* Assegurar que as transações mais críticas têm registo pormenorizado para
+  auditoria com controlos de integridade para prevenir adulteração ou remoção
+  tais como tabelas de base de dados que permitam apenas adição de novos
+  registos.
+* Definir processos de monitorização e alerta capazes de detetar atividade
+  suspeita e resposta atempada
+* Definir e adotar uma metodologia de resposta a incidentes e plano de
+  recuperação tal como [NIST 800-61 rev 2][0xaa5].
 
-Existem frameworks comercias e open-source de protecção aplicacional tais como o [OWASP AppSensor](https://www.owasp.org/index.php/OWASP_AppSensor_Project), firewalls de aplicações web tais como o [mod_security como o OWASP Core Rule Set](https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project), e software de correlação de registos com dashboards e alertas personalizados. Testes de intrusão e análises por ferramentas DAST (tais como o OWASP ZAP) devem sempre despoletar alertas.
+Existem _frameworks_ comerciais e de código aberto para proteção de aplicações
+(e.g. [OWASP App Sensor][0xaa6]), _Web Application Firewalls_ (WAF) (e.g. 
+[ModSecurity with the OWASP ModSecurity Core Rule Set][0xaa7]) assim como
+ferramentas de análise de registos e alarmística.
 
 ## Exemplos de Cenários de Ataque
 
-**Cenário 1**: Um software open-source de gestão de foruns mantido por uma pequena equipa de desenvolvimento foi atacado usando uma falha no software do mesmo. Os atacantes conseguiram limpar o repositório interno de código fonte que continha a próxima versão, e todo o conteúdo do fórum. Apesar do código ter sido recuperado, a falta de monitorização, registo e alerta levou a um ataque sério. O sofware de projecto de software já não está activo devido a este problema.
+**Cenário #1**: Um projeto de código aberto de um forum mantido por uma equipa
+pequena foi comprometido, abusando duma vulnerabilidade do próprio software. Os
+atacantes conseguiram ter acesso ao repositório interno onde estava o código da
+próxima versão assim com todos os conteúdos. Embora o código fonte possa ser
+recuperado, a falta de monitorização, registo e alarmística tornam o incidente
+mais grave. O projeto foi abandonado em consequência deste incidente.
 
-**Cenário 2**: Um atacante faz uma análise de utilizadores que usem uma password comum. Ele pode assumir todas as contas usando a password. Para todos os utilizadores, esta análise deixa apenas o registo de uma autenticação falhada para trás. Depois de alguns dias esta análise pode ser repetida usando uma password diferente.
+**Cenário #2**: Um atacante usa uma ferramenta automática para testar o uso de
+uma palavra-passe comum por forma a ganhar controlo sobre as contas que usam
+essa password. Para as outras contas esta operação deixa apenas registo duma
+tentativa de autenticação falhada, podendo ser repetida dias depois com outra
+palavra-passe.
 
-**Cenário 3**: Um retalhista nos EUA possui uma sandbox interna de análise de malware para analizar anexos. O software da sandbox detectou software potencialmente malicioso, mas ninguém deu resposta a esta deteção. A sandbox tinha vindo a produzir avisos já há algum tempo antes de uma falha ter sido detectada devido a transações fraudulentas usando o cartão de crédito por parte de um banco externo.
+**Cenário #3**: Um dos principais retalhistas dos Estados Unidos tinha
+internamente um ferramenta para análise de anexos para identificação de malware.
+Esta ferramenta detetou uma ocorrência mas ninguém atuou mesmo quando sucessivos
+alertas continuaram a ser gerados. Mais tarde a falha viria a ser identificada
+em consequência de transações fraudulentas.
 
 ## Referências
 
 ### OWASP
 
-* [OWASP Proactive Controls: Implement Logging and Intrusion Detection](https://www.owasp.org/index.php/OWASP_Proactive_Controls#8:_Implement_Logging_and_Intrusion_Detection)
-* [OWASP Application Security Verification Standard: V8 Logging and Monitoring](https://www.owasp.org/index.php/Category:OWASP_Application_Security_Verification_Standard_Project#tab=Home)
-* [OWASP Testing Guide: Testing for Detailed Error Code](https://www.owasp.org/index.php/Category:OWASP_Application_Security_Verification_Standard_Project#tab=Home)
-* [OWASP Cheat Sheet: Logging](https://www.owasp.org/index.php/Logging_Cheat_Sheet)
+* [OWASP Proactive Controls: Implement Logging and Intrusion Detection][0xaa8]
+* [OWASP Application Security Verification Standard: V8 Logging and Monitoring][0xaa9]
+* [OWASP Testing Guide: Testing for Error Code][0xaa10]
+* [OWASP Cheat Sheet: Logging][0xaa11]
 
 ### Externas
 
-* [CWE-223: Omission of Security-relevant Information](https://cwe.mitre.org/data/definitions/223.html)
-* [CWE-778: Insufficient Logging](https://cwe.mitre.org/data/definitions/778.html)
+* [CWE-223: Omission of Security-relevant Information][0xaa12]
+* [CWE-778: Insufficient Logging][0xaa13]
+
+[0xaa1]: https://owasp.blogspot.com/2017/08/owasp-top-10-2017-project-update.html
+[0xaa2]: https://www.owasp.org/index.php/Category:Vulnerability_Scanning_Tools
+[0xaa3]: https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+[0xaa4]: ./0xa3-sensitive-data-disclosure.md
+[0xaa5]: https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final
+[0xaa6]: https://www.owasp.org/index.php/OWASP_AppSensor_Project
+[0xaa7]: https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project
+[0xaa8]: https://www.owasp.org/index.php/OWASP_Proactive_Controls#8:_Implement_Logging_and_Intrusion_Detection
+[0xaa9]: https://www.owasp.org/index.php/Category:OWASP_Application_Security_Verification_Standard_Project#tab=Home
+[0xaa10]: https://www.owasp.org/index.php/Category:OWASP_Application_Security_Verification_Standard_Project#tab=Home
+[0xaa11]: https://www.owasp.org/index.php/Logging_Cheat_Sheet
+[0xaa12]: https://cwe.mitre.org/data/definitions/223.html
+[0xaa13]: https://cwe.mitre.org/data/definitions/778.html
+
